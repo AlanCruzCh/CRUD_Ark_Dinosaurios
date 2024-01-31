@@ -1,23 +1,15 @@
-var mysql = require('mysql2');
+var mysql = require('mysql2/promise');
 
-const db_connection = mysql.createConnection({
+const db_connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'Tacodepastor',
-    database: 'database_dinos'
-})
-
-db_connection.connect( function(error_database) {
-    if (error_database) {
-        console.error('Error de conexión a la base de datos:', error_database);
-    } else {
-        console.log('Conexión exitosa a la base de datos');
-        db_connection.end((error_database) => {
-            if (error_database) {
-                console.error('Error al cerrar la conexión:', error_database);
-            } else {
-                console.log('Conexión cerrada exitosamente');
-            }
-        });
-    }
+    database: 'database_dinos',
+    waitForConnections: true,
+    queueLimit: 0
 });
+
+
+module.exports = {
+    db_connection: db_connection
+}
